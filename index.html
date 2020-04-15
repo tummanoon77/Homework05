@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+</head>
+<body>
+    <div id="container"></div>
+        <div id="mainScreen" ></div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+     // This is my API key. 
+     var APIKey = "5c6b46b9217ee429857f2913e070ee3d";
+
+// Here we are building the URL we need to query the database
+var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=falls-church,virginia&appid=" + APIKey;
+
+$.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      console.log(queryURL);
+    
+    
+    
+    });
+    
+    </script>
+
+</body>
+</html>

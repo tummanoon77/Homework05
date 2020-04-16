@@ -3,36 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
-
-
+    <title>wheather Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./style.css" >
     <script src="https://code.jquery.com/jquery.js"></script>
 
 </head>
 <body>
-    <div id="container"></div>
-        <div id="mainScreen" ></div>
+    <span class="d-block p-2 bg-dark text-white">Weather Dashboard</span>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4">
+                <h5>Search for a city:</h5>
+                <form class="form-inline mr-auto">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Enter the city name here" aria-label="Search">
+                    <button class="btn btn-info" type="submit">Search</button>
+                  </form>
+                  </div>
 
+            <div class="col-8">
+                <div class="container">
+                    <img src="./Assets/sun-3588618_640.jpg" class="img-fluid" alt="blue sky">
+                </div>
+            <div class="card-deck">
+                <div class="card">
+                  <img src="..." class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  </div>
+                </div>
+                <div class="card">
+                  <img src="..." class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  </div>
+                </div>
+                <div class="card">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                  </div> 
+                  <div class="card">
+                  <img src="..." class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  </div>
+                </div> 
+              
+              </div>
+              </div>
+            
+        </div>
+
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
      // This is my API key. 
      var APIKey = "5c6b46b9217ee429857f2913e070ee3d";
+     var allCities =[];
+      function getCityInfo(cityName){
 
 // Here we are building the URL we need to query the database
-var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=falls-church,virginia&appid=" + APIKey;
+var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q="+cityName+"&appid=" + APIKey;
 
 $.ajax({
       url: queryURL,
       method: "GET"
     }).then(function(response) {
       console.log(queryURL);
-    
-    
-    
+      alert("wheather forcast");
+      
+});
+    // Clicking the button 
+    $(".btn btn-info").on("click", function(){
+        event.preventDefault();
+        var cityName = $(this).text();
+        getCityInfo(cityName);
     });
     
+
+    function getForecastForEachDay(listofForecasts){
+        var currentDate ="";
+        for (var i=0; i<listofForecasts.length; i++){
+            // we want to capture one weather object for each day in the list. Once we've captured that
+            // object,we can ignore all other objects for the same day
+            var dateOfListItem = ListOfForecasts[i].dt_text.split(" ")[0];
+            if (dateOfListItem !== currentDate ){
+            //we need to extract just the date part and ignore the time
+            currentDate = dateOfListItem.split("")[0];
+            // Push this weather object to the forecasts array
+            if (forecastArray.length<5){
+                forecastArray.push(listofForecasts[i]);
+            }
+            }
+        }
+    }
+}  
     </script>
 
 </body>

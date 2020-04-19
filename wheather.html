@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>wheather Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="./style.css" >
-    <script src="https://code.jquery.com/jquery.js"></script>
-
+    
 </head>
 <body>
     <span class="d-block p-2 bg-dark text-white">Weather Dashboard</span>
@@ -18,13 +16,17 @@
         <div class="row">
             <div class="col-3">
                 <h5>Search for a city:</h5>
-                <form class="form-inline mr-auto">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Enter the city name here" id="city"aria-label="Search">
-                    <button class="btn btn-info"id="btn" type="submit">Search</button>
+                <form class="form-inline mr-auto" id="city-form">
+                    <input class="form-control mr-sm-2" id="city-input" type="text" placeholder="Enter the city name here" aria-label="Search">
+                    <button class="btn btn-info"id="find-city" type="submit"value ="city-search">Search</button>
                   </form>
+                  <br>
+                  <!--this is where button will go-->
+                  <div id="buttons-here"></div>
                  </div>
                   <div class="col-9">
                     <div class="container">
+                      <div id="city-view"></div>
                         <div id="view"></div>
                        <div class="wind"></div>
                         <div class="humidity"></div>
@@ -81,14 +83,33 @@
                       </div>                    
                 </div>        
             </div>
+            
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script type="text/javascript">    
 
  // This is my API key. 
  var APIKey = "5c6b46b9217ee429857f2913e070ee3d";
+//var array
+ var allCities =[];
+// write a functrion that loops thoufh that array and generates a button for each movie
+function renderButtons(){
+  $("#buttons-here").html("");
+  for (var i=0; i<allCities.length; i++){
+    var btn = $("<button>");
+      btn.text(allCities[i]);
+      $("#buttons-here").append(btn);
+  }
+}
+  
+    $("#find-city").on("click", function(event) {
+    event.preventDefault();
+//here we grab the text from the input box
+var cityName = $("#city-input").val();
+// add the cityname name to array of all city name
+allCities.push(cityName);
+renderButtons();
 
-                var allCities =[];
-                function getForcastInfo(cityName){    
+ //               function getForcastInfo(cityName){    
                     //this is our url     
     var currentURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
     var fiveQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + APIKey;
@@ -97,27 +118,22 @@
       method: "GET"
     }).then(function(response) {
       console.log(response);
-     $("view").text(JSON.stringify(response));
+   $("#city-view").text(JSON.stringify(response));
     });
-      }
-    
-    $("#btn").on("click", function(event) {
-event.preventDefault();
-
-var city = $("#btn").val();
-
-allcities.push(city);
+      
+//allcities.push(cityName);
 // Here we construct our URL
-renderButtons();
+//renderButtons();
 });
 
  // We then created an AJAX call
- $.ajax({
+ /*$.ajax({
       url: currentURL,
       method: "GET"
     }).then(function(response) {
       console.log(currentURL);
       console.log(response.main.temp);
+      //Grab the data from the API and put into var
       var city = response.name;
       var tempK = response.main.temp;
       var wind = response.wind;
@@ -164,10 +180,10 @@ renderButtons();
             }
         }
         return forecastArray ;
-    }
+       }
     
 
-} )}
+*/
 
 
 </script>

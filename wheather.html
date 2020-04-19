@@ -91,9 +91,35 @@
  var APIKey = "5c6b46b9217ee429857f2913e070ee3d";
 //var array
  var allCities =[];
-// write a functrion that loops thoufh that array and generates a button for each movie
+ function getForcastInfo(cityName){    
+                    //this is our url     
+    var currentURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
+    var fiveQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + APIKey;
+    $.ajax({
+      url: currentURL,
+      method: "GET"
+    }).then(function(response) {
+      console.log(response);
+   $("#city-view").text(JSON.stringify(response));
+    });
+  }
+
+
+
+// select parent div. because it's in the DOM when this click event is loaded
+// specify the target of the click that should be there later on
+$("#buttons-here").on("click", "button",function(){
+var cityName = $(this).text();
+getForcastInfo(cityName);
+  console.log($(this));
+
+
+});
+
 function renderButtons(){
-  $("#buttons-here").html("");
+  $("#buttons-here").empty() ;
+ // write a functrion that loops thoufh that array and generates a button for each movie
+
   for (var i=0; i<allCities.length; i++){
     var btn = $("<button>");
       btn.text(allCities[i]);
@@ -109,7 +135,7 @@ var cityName = $("#city-input").val();
 allCities.push(cityName);
 renderButtons();
 
- //               function getForcastInfo(cityName){    
+    
                     //this is our url     
     var currentURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
     var fiveQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + APIKey;

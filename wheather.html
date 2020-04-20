@@ -28,12 +28,14 @@
                     <div class="container">
                       <div id="city-view"></div>
                         <div class="city"></div>
-                       <div class="wind"></div>
+
+                       <div class="temp"></div>
+                       
                         <div class="humidity"></div>
-                        <div class="temp"></div>
+                        <div class="wind"></div>
                     </div>
                     <h3> 5 days Forecast</h3>
-                    <div class="card-group">
+                    <div class="card-group" id="fiveDay">
                         <div class="card">
                           <img src="./Assets/c-dustin-K-Iog-Bqf8E-unsplash.jpg" class="card-img" alt="cloud">
                           <div class="card-img-overlay">
@@ -47,36 +49,36 @@
                             <img src="./Assets/elia-clerici-XIrIWKCQykg-unsplash.jpg"class="card-img" alt="sky">
                             <div class="card-img-overlay">
                               <h5 class="card-title">after tomorrow</h5>
-                              <div class="wind2"></div>
-                              <div class="humidity2"></div>
-                              <div class="temp2"></div>
+                              <div class="wind1"></div>
+                              <div class="humidity1"></div>
+                              <div class="temp1"></div>
                             </div>
                           </div>
                           <div class="card">
                             <img src="./Assets/elia-clerici-XIrIWKCQykg-unsplash.jpg" class="card-img" alt="sky">
                             <div class="card-img-overlay">
                               <h5 class="card-title">next 2 days</h5>
-                              <div class="wind3"></div>
-                              <div class="humidity3"></div>
-                              <div class="temp3"></div>
+                              <div class="wind1"></div>
+                              <div class="humidity1"></div>
+                              <div class="temp1"></div>
                             </div>
                           </div>
                           <div class="card">
                             <img src="./Assets/pero-kalimero-9BJRGlqoIUk-unsplash.jpg" class="card-img" alt="sky">
                             <div class="card-img-overlay">
                               <h5 class="card-title">next 3 days</h5>
-                              <div class="wind4"></div>
-                              <div class="humidity4"></div>
-                              <div class="temp4"></div>
+                              <div class="wind1"></div>
+                              <div class="humidity1"></div>
+                              <div class="temp1"></div>
                             </div>
                           </div> 
                           <div class="card">
                           <img src="./Assets/taylor-van-riper-yQorCngxzwI-unsplash.jpg" class="card-img" alt="skycloud">
                           <div class="card-img-overlay">
                             <h5 class="card-title">next 4 days</h5>
-                            <div class="wind5"></div>
-                            <div class="humidity5"></div>
-                            <div class="temp5"></div>
+                            <div class="wind1"></div>
+                            <div class="humidity1"></div>
+                            <div class="temp1"></div>
                           </div>
                         </div> 
                      </div>
@@ -91,7 +93,8 @@
  var APIKey = "5c6b46b9217ee429857f2913e070ee3d";
 //var array
  var allCities =[];
- function getForcastInfo(cityName){    
+ function getForcastInfo(cityName){   
+  event.preventDefault();
                     //this is our url     
     var currentURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
     var fiveQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + APIKey;
@@ -101,6 +104,7 @@
     }).then(function(response) {
       console.log(response);
    //$("#city-view").text(JSON.stringify(response));
+   
    var city = response.name;
       var tempK = response.main.temp;
       var wind = response.wind;
@@ -109,9 +113,26 @@
       var windDeg = wind.deg;
       var tempF = (parseFloat(tempK) -273.15) *1.8+32;
       $("div.city").text(city);
-      $("div.wind").text("wind speed of "+ windSpeed+"at"+windDeg+" degrees");
-      $("div.humidity").text("Humidity is "+humidity);
-      $("div.temp").text("Temperature of"+tempF+" degrees Farenheite");
+      $("div.wind").text("wind speed : "+ windSpeed +"at"+ windDeg +" degrees");
+      $("div.humidity").text("Humidity : "+ humidity);
+      $("div.temp").text("Temperature : "+ tempF +" °F");
+      
+      var uviURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon;
+        $.ajax({
+            url: uviURL,
+            method: "GET"
+        }).then(function (response) {
+
+        });
+    
+      $.ajax({
+      url: fiveQueryURL,
+      method: "GET"
+    }).then(function(response) {
+      console.log(fiveQueryURL); 
+      renderFiveDay();
+    });
+      
     });
   }
 
@@ -157,6 +178,8 @@ renderButtons();
       console.log(response);
    //$("#city-view").text(JSON.stringify(response));
    //grab data from api and put into var
+   
+
       var city = response.name;
       var tempK = response.main.temp;
       var wind = response.wind;
@@ -165,16 +188,71 @@ renderButtons();
       var windDeg = wind.deg;
       var tempF = (parseFloat(tempK) -273.15) *1.8+32;
       $("div.city").text(city);
-      $("div.wind").text("wind speed of "+ windSpeed+"at"+windDeg+" degrees");
-      $("div.humidity").text("Humidity is "+humidity);
-      $("div.temp").text("Temperature of"+tempF+" degrees Farenheite");
-  
+      $("div.wind").text("wind speed : "+ windSpeed +"at"+ windDeg +" degrees");
+      $("div.humidity").text("Humidity : "+ humidity);
+      $("div.temp").text("Temperature :"+ tempF +" °F");
+
+      var uviURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon;
+        $.ajax({
+            url: uviURL,
+            method: "GET"
+        }).then(function (response) {
+
+        });
+    
+     
+      $.ajax({
+      url: fiveQueryURL,
+      method: "GET"
+    }).then(function(response) {
+      console.log(fiveQueryURL); 
+      renderFiveDay();
+    });
   });
       
+  function getForecastForEachDay(listofForecasts){
+        var currentDate ="";
+        var forecastArray =[];
+        for (var i=0; i<listofForecasts.length; i++){
+            // we want to capture one weather object for each day in the list. Once we've captured that
+            // object,we can ignore all other objects for the same day
+            var dateOfListItem = ListOfForecasts[i].dt_text.split(" ")[0];
+            if (dateOfListItem !== currentDate ){
+            //we need to extract just the date part and ignore the time
+            currentDate = dateOfListItem.split("")[0];
+            // Push this weather object to the forecasts array
+            if (forecastArray.length<5){
+                forecastArray.push(listofForecasts[i]);
 
+      }
+            }
+        }
+        return forecastArray ;
+        console.log(forecastArray);
+       }
 });
+function renderFiveDay(){
+var fiveDayArr = getForecastForEachDay(data.list);
+$("#fiveDay").text("");
+    for (var i = 0; i < fiveDayArr.length; i++) {
+      
+        var dateEl = $("<h5>");
+        dateEl.text("Date: " + fiveDayArr[i].dt_txt.split(" ")[0]);
 
- // We then created an AJAX call
+        var divEl =$("div.card")
+        var tempEl = $("div.temp1");
+          var tempK = response.main.temp;
+          var tempF = (parseFloat(tempK) -273.15) *1.8+32; 
+        tempEl.text("Temp: " + tempF);
+
+        var humidityEl = $("humidity1");
+        humidityEl.text("Humidity: " + fiveDayArr[i].main.humidity);
+
+        divEl.append(dateEl).append(tempEl).append(humidityEl);
+
+        $("#fiveDay").append(divEl);
+    }
+  }
  /*$.ajax({
       url: currentURL,
       method: "GET"

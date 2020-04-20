@@ -5,7 +5,9 @@
 }
 .container{
     margin : 20px auto;
-    background-color: white;
+    text-align: center;
+    color: white;
+    background :linear-gradient(rgb(47,150,163),rgb(48,62,143));
     height: 300px;
     width : 900px;
     border-radius: 5px;
@@ -15,6 +17,18 @@
 #button-here{
   margin-top: 10px;
   margin-bottom: 10px;
+}
+.city {
+font-size: 50px;
+}
+.humidity{
+  font-size: 25px;
+}
+.temp{
+  font-size: 25px;
+}
+.wind{
+  font-size: 25px;
 }
 .card-img{
     height:100%;
@@ -69,6 +83,7 @@
     body {
       background-color:whitesmoke;
     }
+    
   
     .wrapper {
       /* Box-model */

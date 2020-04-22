@@ -1,317 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>wheather Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./style.css" >
-    
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
     <span class="d-block p-2 bg-dark text-white">Weather Dashboard</span>
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-3">
-                <h5>Search for a city:</h5>
-                <form class="form-inline mr-auto" id="city-form">
-                    <input class="form-control mr-sm-2" id="city-input" type="text" placeholder="Enter the city name here" aria-label="Search">
-                    <button class="btn btn-info"id="find-city" type="submit"value ="city-search">Search</button>
-                  </form>
-                  <br>
-                  <!--this is where button will go-->
-                  <div id="buttons-here"></div>
-                 </div>
-                  <div class="col-9">
-                    <div class="container">
-                      <div id="city-view"></div>
-                        <div class="city"></div>
-
-                       <div class="temp"></div>
-                       
-                        <div class="humidity"></div>
-                        <div class="wind"></div>
-                    </div>
-                    <h3> 5 days Forecast</h3>
-                    <div class="card-group" id="fiveDay">
-                        <div class="card">
-                          <img src="./Assets/c-dustin-K-Iog-Bqf8E-unsplash.jpg" class="card-img" alt="cloud">
-                          <div class="card-img-overlay">
-                            <h5 class="card-title">Tomorrow</h5>
-                            <div class="wind1"></div>
-                            <div class="humidity1"></div>
-                            <div class="temp1"></div>
-                          </div>
-                        </div>
-                        <div class="card">
-                            <img src="./Assets/elia-clerici-XIrIWKCQykg-unsplash.jpg"class="card-img" alt="sky">
-                            <div class="card-img-overlay">
-                              <h5 class="card-title">after tomorrow</h5>
-                              <div class="wind1"></div>
-                              <div class="humidity1"></div>
-                              <div class="temp1"></div>
-                            </div>
-                          </div>
-                          <div class="card">
-                            <img src="./Assets/elia-clerici-XIrIWKCQykg-unsplash.jpg" class="card-img" alt="sky">
-                            <div class="card-img-overlay">
-                              <h5 class="card-title">next 2 days</h5>
-                              <div class="wind1"></div>
-                              <div class="humidity1"></div>
-                              <div class="temp1"></div>
-                            </div>
-                          </div>
-                          <div class="card">
-                            <img src="./Assets/pero-kalimero-9BJRGlqoIUk-unsplash.jpg" class="card-img" alt="sky">
-                            <div class="card-img-overlay">
-                              <h5 class="card-title">next 3 days</h5>
-                              <div class="wind1"></div>
-                              <div class="humidity1"></div>
-                              <div class="temp1"></div>
-                            </div>
-                          </div> 
-                          <div class="card">
-                          <img src="./Assets/taylor-van-riper-yQorCngxzwI-unsplash.jpg" class="card-img" alt="skycloud">
-                          <div class="card-img-overlay">
-                            <h5 class="card-title">next 4 days</h5>
-                            <div class="wind1"></div>
-                            <div class="humidity1"></div>
-                            <div class="temp1"></div>
-                          </div>
-                        </div> 
-                     </div>
-                      </div>                    
-                </div>        
-            </div>
+      <div class="row">
+        <div class="col-3">
+          <h5>Search for a city:</h5>
+          <form class="form-inline mr-auto" id="city-form">
+            <input
+              class="form-control mr-sm-2"
+              id="city-input"
+              type="text"
+              placeholder="Enter the city name here"
+              aria-label="Search"
+            />
+            <button
+              class="btn btn-info"
+              id="find-city"
+              type="submit"
+              value="city-search"
+            >
+              Search
+            </button>
+          </form>
+          <br />
+          <!--this is where button will go-->
+          <ul id="buttons-here"></ul>
+        </div>
+        <div class="col-9">
+          <div class="container">
+            <div id="city-view"></div>
+            <div class="city"></div>
             
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-            <script type="text/javascript">    
+            <div class="temp"></div>
 
- // This is my API key. 
- var APIKey = "5c6b46b9217ee429857f2913e070ee3d";
-//var array
- var allCities =[];
- function getForcastInfo(cityName){   
-  event.preventDefault();
-                    //this is our url     
-    var currentURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
-    var fiveQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + APIKey;
-    $.ajax({
-      url: currentURL,
-      method: "GET"
-    }).then(function(response) {
-      console.log(response);
-   //$("#city-view").text(JSON.stringify(response));
-   
-   var city = response.name;
-      var tempK = response.main.temp;
-      var wind = response.wind;
-      var humidity = response.main.humidity;
-      var windSpeed = wind.speed;
-      var windDeg = wind.deg;
-      var tempF = (parseFloat(tempK) -273.15) *1.8+32;
-      $("div.city").text(city);
-      $("div.wind").text("wind speed : "+ windSpeed +"at"+ windDeg +" degrees");
-      $("div.humidity").text("Humidity : "+ humidity);
-      $("div.temp").text("Temperature : "+ tempF +" °F");
-      
-      var uviURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon;
-        $.ajax({
-            url: uviURL,
-            method: "GET"
-        }).then(function (response) {
+            <div class="humidity"></div>
+            <div class="wind"></div>
+            <div id="UV"><div id="UVC"></div></div>
+          </div>
+          <h3>5 days Forecast</h3>
+          <div class="card-group" id="fiveDay">
+            <div class="card">
+              <img
+                src="./Assets/c-dustin-K-Iog-Bqf8E-unsplash.jpg"
+                class="card-img"
+                alt="cloud"
+              />
+              <div class="card-img-overlay">
+                <h5 class="card-title">Tomorrow</h5>
+                <div class="wind1"></div>
+                <div class="humidity1"></div>
+                <div class="temp1"></div>
+              </div>
+            </div>
+            <div class="card">
+              <img
+                src="./Assets/elia-clerici-XIrIWKCQykg-unsplash.jpg"
+                class="card-img"
+                alt="sky"
+              />
+              <div class="card-img-overlay">
+                <h5 class="card-title">after tomorrow</h5>
+                <div class="wind1"></div>
+                <div class="humidity1"></div>
+                <div class="temp1"></div>
+              </div>
+            </div>
+            <div class="card">
+              <img
+                src="./Assets/elia-clerici-XIrIWKCQykg-unsplash.jpg"
+                class="card-img"
+                alt="sky"
+              />
+              <div class="card-img-overlay">
+                <h5 class="card-title">next 2 days</h5>
+                <div class="wind1"></div>
+                <div class="humidity1"></div>
+                <div class="temp1"></div>
+              </div>
+            </div>
+            <div class="card">
+              <img
+                src="./Assets/pero-kalimero-9BJRGlqoIUk-unsplash.jpg"
+                class="card-img"
+                alt="sky"
+              />
+              <div class="card-img-overlay">
+                <h5 class="card-title">next 3 days</h5>
+                <div class="wind1"></div>
+                <div class="humidity1"></div>
+                <div class="temp1"></div>
+              </div>
+            </div>
+            <div class="card">
+              <img
+                src="./Assets/taylor-van-riper-yQorCngxzwI-unsplash.jpg"
+                class="card-img"
+                alt="skycloud"
+              />
+              <div class="card-img-overlay">
+                <h5 class="card-title">next 4 days</h5>
+                <div class="wind1"></div>
+                <div class="humidity1"></div>
+                <div class="temp1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        });
-    
-      $.ajax({
-      url: fiveQueryURL,
-      method: "GET"
-    }).then(function(response) {
-      console.log(fiveQueryURL); 
-      renderFiveDay();
-    });
-      
-    });
-  }
-
-
-
-// select parent div. because it's in the DOM when this click event is loaded
-// specify the target of the click that should be there later on
-$("#buttons-here").on("click", "button",function(){
-var cityName = $(this).text();
-getForcastInfo(cityName);
-  console.log($(this));
-
-
-});
-
-function renderButtons(){
-  $("#buttons-here").empty() ;
- // write a functrion that loops thoufh that array and generates a button for each movie
-
-  for (var i=0; i<allCities.length; i++){
-    var btn = $("<button>");
-      btn.text(allCities[i]);
-      $("#buttons-here").append(btn);
-  }
-}
-  
-    $("#find-city").on("click", function(event) {
-    event.preventDefault();
-//here we grab the text from the input box
-var cityName = $("#city-input").val();
-// add the cityname name to array of all city name
-allCities.push(cityName);
-renderButtons();
-
-    
-                    //this is our url     
-    var currentURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + APIKey;
-    var fiveQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + APIKey;
-    $.ajax({
-      url: currentURL,
-      method: "GET"
-    }).then(function(response) {
-      console.log(response);
-   //$("#city-view").text(JSON.stringify(response));
-   //grab data from api and put into var
-   
-
-      var city = response.name;
-      var tempK = response.main.temp;
-      var wind = response.wind;
-      var humidity = response.main.humidity;
-      var windSpeed = wind.speed;
-      var windDeg = wind.deg;
-      var tempF = (parseFloat(tempK) -273.15) *1.8+32;
-      $("div.city").text(city);
-      $("div.wind").text("wind speed : "+ windSpeed +"at"+ windDeg +" degrees");
-      $("div.humidity").text("Humidity : "+ humidity);
-      $("div.temp").text("Temperature :"+ tempF +" °F");
-
-      var uviURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon;
-        $.ajax({
-            url: uviURL,
-            method: "GET"
-        }).then(function (response) {
-
-        });
-    
-     
-      $.ajax({
-      url: fiveQueryURL,
-      method: "GET"
-    }).then(function(response) {
-      console.log(fiveQueryURL); 
-      renderFiveDay();
-    });
-  });
-      
-  function getForecastForEachDay(listofForecasts){
-        var currentDate ="";
-        var forecastArray =[];
-        for (var i=0; i<listofForecasts.length; i++){
-            // we want to capture one weather object for each day in the list. Once we've captured that
-            // object,we can ignore all other objects for the same day
-            var dateOfListItem = ListOfForecasts[i].dt_text.split(" ")[0];
-            if (dateOfListItem !== currentDate ){
-            //we need to extract just the date part and ignore the time
-            currentDate = dateOfListItem.split("")[0];
-            // Push this weather object to the forecasts array
-            if (forecastArray.length<5){
-                forecastArray.push(listofForecasts[i]);
-
-      }
-            }
-        }
-        return forecastArray ;
-        console.log(forecastArray);
-       }
-});
-function renderFiveDay(){
-var fiveDayArr = getForecastForEachDay(data.list);
-$("#fiveDay").text("");
-    for (var i = 0; i < fiveDayArr.length; i++) {
-      
-        var dateEl = $("<h5>");
-        dateEl.text("Date: " + fiveDayArr[i].dt_txt.split(" ")[0]);
-
-        var divEl =$("div.card")
-        var tempEl = $("div.temp1");
-          var tempK = response.main.temp;
-          var tempF = (parseFloat(tempK) -273.15) *1.8+32; 
-        tempEl.text("Temp: " + tempF);
-
-        var humidityEl = $("humidity1");
-        humidityEl.text("Humidity: " + fiveDayArr[i].main.humidity);
-
-        divEl.append(dateEl).append(tempEl).append(humidityEl);
-
-        $("#fiveDay").append(divEl);
-    }
-  }
- /*$.ajax({
-      url: currentURL,
-      method: "GET"
-    }).then(function(response) {
-      console.log(currentURL);
-      console.log(response.main.temp);
-      //Grab the data from the API and put into var
-      var city = response.name;
-      var tempK = response.main.temp;
-      var wind = response.wind;
-      var humidity = response.main.humidity;
-      var windSpeed = wind.speed;
-      var windDeg = wind.deg;
-
-      // convert kelvin temp
-      var tempF = (parseFloat(tempK) -273.15) *1.8+32;
-
-      // populate the Dom
-      $("div.city").text(city);
-      $("div.wind").text("wind speed of "+ windSpeed+"at"+windDeg+" degrees");
-      $("div.humidity").text("Humidity is "+humidity);
-      $("div.temp").text("Temperature of"+tempF+" degrees Farenheite");
-     
-     
-    });
-
-    $.ajax({
-      url: fiveQueryURL,
-      method: "GET"
-    }).then(function(response) {
-      console.log(fiveQueryURL);
-
-
-    });    
-     
-    function getForecastForEachDay(listofForecasts){
-        var currentDate ="";
-        var forecastArray =[];
-        for (var i=0; i<listofForecasts.length; i++){
-            // we want to capture one weather object for each day in the list. Once we've captured that
-            // object,we can ignore all other objects for the same day
-            var dateOfListItem = ListOfForecasts[i].dt_text.split(" ")[0];
-            if (dateOfListItem !== currentDate ){
-            //we need to extract just the date part and ignore the time
-            currentDate = dateOfListItem.split("")[0];
-            // Push this weather object to the forecasts array
-            if (forecastArray.length<5){
-                forecastArray.push(listofForecasts[i]);
-
-      }
-            }
-        }
-        return forecastArray ;
-       }
-    
-
-*/
-
-
-</script>
-</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
 </html>

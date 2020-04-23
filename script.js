@@ -10,18 +10,21 @@ function getForcastInfo(cityName) {
     cityName +
     "&appid=" +
     APIKey;
-    var fiveQueryURL =
-    "https://api.openweathermap.org/data/2.5/forecast?q=" +
-    cityName +
-    "&appid=" +
-    APIKey;
+    
   $.ajax({
     url: currentURL,
     method: "GET",
   }).then(function (response) {
     console.log(response);
+    var uviURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon;
+    $.ajax({
+        url: uviURL,
+        method: "GET"
+    }).then(function (response) {
+        $("#UV").text("UV : " + response.value);
+    }); 
    
-    //var
+        //var
 
     var city = response.name;
     var tempK = response.main.temp;
@@ -37,14 +40,15 @@ function getForcastInfo(cityName) {
     $("div.humidity").text("Humidity : " + humidity);
     $("div.temp").text("Temperature : " + tempF + " °F");
   });
-}
 
+}
 
 // specify the target of the click that should be there later on
 $("#buttons-here").on("click", "button", function () {
   var cityName = $(this).text();
   getForcastInfo(cityName);
-  console.log($(this));
+ 
+  
 });
 
 function renderButtons() {
@@ -67,17 +71,14 @@ $("#find-city").on("click", function (event) {
   allCities.push(cityName);
   renderButtons();
   getForcastInfo(cityName);
+  
   //this is our url
   var currentURL =
     "https://api.openweathermap.org/data/2.5/weather?q=" +
     cityName +
     "&appid=" +
     APIKey;
-  var fiveQueryURL =
-    "https://api.openweathermap.org/data/2.5/forecast?q=" +
-    cityName +
-    "&appid=" +
-    APIKey;
+  
   $.ajax({
     url: currentURL,
     method: "GET",
@@ -90,25 +91,64 @@ $("#find-city").on("click", function (event) {
         $("#UV").text("UV : " + response.value);
        
     });
-   
-$.ajax({
-    url: fiveQueryURL,
-    method: "GET"
-}).then(function (response) {
-    renderFiveDay(response);
-});
-
-   
-  });
-  
-
-  function getForecastForEachDay(listofForecasts) {
-    event.preventDefault();  
     var fiveQueryURL =
     "https://api.openweathermap.org/data/2.5/forecast?q=" +
     cityName +
     "&appid=" +
     APIKey;
+$.ajax({
+    url: fiveQueryURL,
+    method: "GET"
+}).then(function (response) {
+    console.log(response);
+});
+
+   
+  });
+  function renderFiveDay(data) {
+
+    var fiveDayArr = getForecastForEachDay(data.list);
+    
+    for (var i = 0; i < fiveDayArr.length; i++) {
+        
+      var dateEl = $("<h5>");
+      dateEl.text("Date: " + fiveDayArr[i].dt_txt.split(" ")[0]);
+  
+      var divEl = $("div.card");
+      var tempEl = $("div.temp1");
+      var tempK = response.main.temp;
+      var tempF = (parseFloat(tempK) - 273.15) * 1.8 + 32;
+      tempEl.text("Temp: " + tempF);
+  
+      var humidityEl = $("div.humidity1");
+      humidityEl.text("Humidity: " + fiveDayArr[i].main.humidity);
+  
+        
+    }
+
+}
+  function getForecastForEachDay(listOfForecasts) { //Mostly Gary's code with some minor modifications
+  var currentDate = "";
+  var forecastArray = [];
+  for (var i = 0; i < listOfForecasts.length; i++) {
+      // We want to capture one weather object for each day in the list. Once we've captured that
+      // object, we can ignore all other objects for the same day
+      var dateOfListItem = listOfForecasts[i].dt_txt.split(" ")[0];
+      if (dateOfListItem !== currentDate) {
+          // We need to extract just the date part and ignore the time
+          currentDate = dateOfListItem.split(" ")[0];
+          // Push this weather object to the forecasts array
+          if (forecastArray.length < 5) {
+              forecastArray.push(listOfForecasts[i]);
+          }
+      }
+  }
+  return forecastArray;
+}
+})
+ /* function getForecastForEachDay(listofForecasts) {
+    event.preventDefault();  
+    
    
     var currentDate = "";
     var forecastArray = [];
@@ -158,6 +198,6 @@ function renderFiveDay() {
     $("#fiveDay").append(divEl);
   }
 }
-
+*/
 
 
